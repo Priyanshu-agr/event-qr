@@ -1,11 +1,15 @@
 const { google } = require('googleapis');
 const sheets = google.sheets('v4');
+require('dotenv').config();
 
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
+const GCLOUD_PROJECT = process.env.PROJECTID;
+
 
 async function getAuthToken() {
     const auth = new google.auth.GoogleAuth({
-        scopes: SCOPES
+        scopes: SCOPES,
+        keyFile: './service_account_creds.json'
     });
     const authToken = await auth.getClient();
     return authToken;
