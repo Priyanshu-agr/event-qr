@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   QRViewController? QRcontroller;
   Barcode? code;
   String? res;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -47,11 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Stack(alignment: Alignment.center, children: [
           buildQRView(context),
           Positioned(
-            bottom: 10,
+            bottom: 700,
             child: buildResult(),
           ),
           Positioned(
-            bottom: 50,
+            bottom: 40,
             child: Row(
               children: [
                 ElevatedButton(
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                     child: Row(
                       children: [
                         const Icon(
@@ -85,12 +86,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (kDebugMode) {
                       print("${code!.code}");
                     }
                     QRcontroller?.pauseCamera();
-                    urlToPost.sendData(code!.code.toString()).then((value) {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await urlToPost.sendData(code!.code.toString()).then((value) {
+                      setState(() {
+                        isLoading = false;
+                      });
                       if (kDebugMode) {
                         print(value);
                       }
@@ -191,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                     child: Row(
                       children: [
                         const Icon(
@@ -212,6 +219,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          if(isLoading)
+            Center(
+            child: CircularProgressIndicator(),
+          )
         ]),
       ),
     );
