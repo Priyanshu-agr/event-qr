@@ -24,6 +24,7 @@ const qr = require("qrcode");
     }
   }
   
+  //adds qr code data url to sheets
   async function testGetSpreadSheetValues() {
     try {
       const auth = await getAuthToken();
@@ -36,7 +37,7 @@ const qr = require("qrcode");
     //   console.log(response.data.values[1]);
     for(let i = 1; i < response.data.values.length; i++){
         console.log(response.data.values[i][1]);
-        let range = `test!F${i+1}`;
+        let range = `Junior_Response!F${i+1}`;
         let values = [[await qr.toDataURL(response.data.values[i][1])]];
 
         try {
