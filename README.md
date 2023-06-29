@@ -8,7 +8,7 @@ Although a one nighter, this works fine and got the task done with no issues aft
 ## Components
 1. The backend or the web service; written in node js.
     - This service uses Google API to access and modify data from Google Sheets.
-2. An android application made in Flutter [PR yet to be merged] [Made by @Sahilpervezalam].
+2. An android application made in Flutter.
     - This application is used to scan the QRs and send the data to the web service.
 
 ## Future Plans
