@@ -1,1 +1,3 @@
 backend/node_modules
+backend/service_account_creds.json
+backend/.env
