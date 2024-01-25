@@ -9,7 +9,7 @@ const GCLOUD_PROJECT = process.env.PROJECTID;
 async function getAuthToken() {
     const auth = new google.auth.GoogleAuth({
         scopes: SCOPES,
-        keyFile: './service_account_creds.json'
+        keyFile: './qr-code-412309-ab8317250450.json'
     });
     const authToken = await auth.getClient();
     return authToken;
@@ -49,10 +49,30 @@ async function updateValues({ spreadsheetId, auth, sheetName, range, values }) {
     }
 }
 
+async function updateHashes({ spreadsheetId, auth, range, values }) {
+    const resource = { values };
+    try {
+        const res = await sheets.spreadsheets.values.update({
+            spreadsheetId,
+            auth,
+            range,
+            valueInputOption: 'USER_ENTERED',
+            majorDimension: "COLUMNS",
+            resource,
+        });
+        console.log(`Updated ${res.data.updatedCells} cells`);
+        return res;
+    }
+    catch (error) {
+        throw err;
+    }
+}
+
 
 module.exports = {
     getAuthToken,
     getSpreadSheet,
     getSpreadSheetValues,
-    updateValues
+    updateValues,
+    updateHashes
 }
