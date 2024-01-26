@@ -147,52 +147,77 @@ app.post("/scan", async (req, res) => {
     }
 });
 
-app.get("/generate", async (req, res) => {
+// app.get("/generate", async (req, res) => {
+//     try {
+//         const auth = await getAuthToken();
+//         const response = await getSpreadSheetValues({
+//             spreadsheetId,
+//             sheetName,
+//             auth
+//         });
+//         const algorithm = 'aes256';
+//         // const secret = 'hackjnu3.0';
+//         const key = 'ExchangePasswordPasswordExchange';
+//         const iv = crypto.randomBytes(8).toString('hex');
+//         const qrs = [];
+//         for (let i = 1; i < response.data.values.length; i++) {
+//             // const hash = crypto.createHash('md5').update(response.data.values[i][0]).digest('hex');
+//             const cipher = crypto.createCipheriv(algorithm, key, iv);
+//             const encrypte = cipher.update(response.data.values[i][0], 'utf8', 'hex') + cipher.final('hex');
+//             const encrypted = encrypte + '::' + iv;
+
+//             const generateQR = async text => {
+//                 try {
+//                     return (await qr.toDataURL(text))
+//                 } catch (err) {
+//                     console.error(err)
+//                 }
+//             }
+//             // console.log(encrypted);
+//             const qrd = await generateQR(encrypted);
+//             qrs.push(qrd);
+//         }
+//         let values = [qrs];
+//         let range = 'K2:K';
+//         const response2 = await updateHashes({
+//             spreadsheetId,
+//             auth,
+//             range,
+//             values
+//         });
+//         console.log('output for updateValues', JSON.stringify(response2.data, null, 2));
+//         res.send('QRs generated');
+//     }
+//     catch (error) {
+//         console.log(error.message, error.stack);
+//     }
+
+// });
+
+app.post('/generateqr', async (req, res) => {
     try {
-        const auth = await getAuthToken();
-        const response = await getSpreadSheetValues({
-            spreadsheetId,
-            sheetName,
-            auth
-        });
+        const { email } = req.body;
         const algorithm = 'aes256';
-        // const secret = 'hackjnu3.0';
         const key = 'ExchangePasswordPasswordExchange';
         const iv = crypto.randomBytes(8).toString('hex');
-        const qrs = [];
-        for (let i = 1; i < response.data.values.length; i++) {
-            // const hash = crypto.createHash('md5').update(response.data.values[i][0]).digest('hex');
-            const cipher = crypto.createCipheriv(algorithm, key, iv);
-            const encrypte = cipher.update(response.data.values[i][0], 'utf8', 'hex') + cipher.final('hex');
-            const encrypted = encrypte + '::' + iv;
-
-            const generateQR = async text => {
-                try {
-                    return (await qr.toDataURL(text))
-                } catch (err) {
-                    console.error(err)
-                }
+        const cipher = crypto.createCipheriv(algorithm, key, iv);
+        const encrypte = cipher.update(email, 'utf8', 'hex') + cipher.final('hex');
+        const encrypted = encrypte + '::' + iv;
+        const generateQR = async text => {
+            try {
+                return (await qr.toDataURL(text))
+            } catch (err) {
+                console.error(err)
             }
-            // console.log(encrypted);
-            const qrd = await generateQR(encrypted);
-            qrs.push(qrd);
         }
-        let values = [qrs];
-        let range = 'K2:K';
-        const response2 = await updateHashes({
-            spreadsheetId,
-            auth,
-            range,
-            values
-        });
-        console.log('output for updateValues', JSON.stringify(response2.data, null, 2));
-        res.send('QRs generated');
+        const qrd = await generateQR(encrypted);
+        res.json({'qr':qrd});
+        console.log('QR generated');
     }
     catch (error) {
         console.log(error.message, error.stack);
     }
-
-});
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
