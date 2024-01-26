@@ -101,8 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (kDebugMode) {
                         print(value);
                       }
-                      if (value == "Scanned") {
-                        res = "Scanned";
+                      if (value == "scanned") {
+                        res = "scanned";
                         showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
@@ -131,8 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         );
-                      } else if (value == "Already scanned") {
-                        res = "Already scanned";
+                      } else if (value == "already_scanned") {
+                        res = "already_scanned";
                         showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
@@ -162,13 +162,72 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         );
-                      } else if (value == "Not found") {
-                        res = "Not found";
+                      } else if (value == "not_found") {
+                        res = "not_found";
                         showDialog(
                           context: context,
                           builder: (ctx) => AlertDialog(
                             title: const Text(
                               "Coupon not Found!!",
+                            ),
+                            content: const Image(
+                              image: AssetImage("Assets/not_found.gif"),
+                            ),
+                            actions: [
+                              TextButton.icon(
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                  size: 25,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(ctx).pop();
+                                },
+                                label: const Text(
+                                  "Close",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 17),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }else if(value == "wrong_time"){
+                        res = "wrong_time";
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text(
+                              "It's not meal time yet !!",
+                            ),
+                            content: const Image(
+                              image: AssetImage("Assets/not_found.gif"),
+                            ),
+                            actions: [
+                              TextButton.icon(
+                                icon: const Icon(
+                                  Icons.close,
+                                  color: Colors.red,
+                                  size: 25,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(ctx).pop();
+                                },
+                                label: const Text(
+                                  "Close",
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 17),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }else if(value == "no_checkin"){
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text(
+                              "You haven't checked in for the event !!",
                             ),
                             content: const Image(
                               image: AssetImage("Assets/not_found.gif"),
