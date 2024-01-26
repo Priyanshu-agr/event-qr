@@ -205,7 +205,7 @@ app.post('/generateqr', async (req, res) => {
         const encrypted = encrypte + '::' + iv;
         const generateQR = async text => {
             try {
-                return (await qr.toString(text,["svg"]));
+                return (await qr.toString(text,{type:"svg"}));
             } catch (err) {
                 console.error(err)
             }
