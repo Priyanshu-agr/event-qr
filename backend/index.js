@@ -3,6 +3,7 @@ const app = express();
 const bp = require("body-parser");
 const crypto = require('crypto');
 const qr = require("qrcode");
+const cors = require("cors");
 const {
     getAuthToken,
     getSpreadSheet,
@@ -16,6 +17,7 @@ const spreadsheetId = process.env.SHEETID;
 const sheetName = process.env.SHEETNAME;
 
 app.set("view engine", "ejs");
+app.use(cors());
 app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 
