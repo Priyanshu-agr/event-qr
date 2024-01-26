@@ -23,15 +23,16 @@ app.get("/", (req, res) => {
     res.render("index");
 })
 
-// 3 response values: "Scanned", "Already scanned", "Not found"
+// 4 response values: "Scanned", "Already scanned", "Not found", "no_checkin"
 app.post("/scan", async (req, res) => {
     const { time, email } = req.body;
     const algorithm = 'aes256';
     // const secret = 'hackjnu3.0';
-    const key = 'ExchangePasswordPasswordExchange';
-    const encryptedArray = email.split('::');
-    const iv = encryptedArray[1];
+
     try {
+        const key = 'ExchangePasswordPasswordExchange';
+        const encryptedArray = email.split('::');
+        const iv = encryptedArray[1];
         const auth = await getAuthToken();
         const response = await getSpreadSheetValues({
             spreadsheetId,
@@ -58,8 +59,8 @@ app.post("/scan", async (req, res) => {
                         return;
                     }
                     else {
-                        let range = `H${i + 1}`;
-                        let values = [["1"]];
+                        const range = `H${i + 1}`;
+                        const values = [["1"]];
 
                         try {
                             const response = await updateValues({
@@ -87,8 +88,8 @@ app.post("/scan", async (req, res) => {
                         return;
                     }
                     else {
-                        let range = `I${i + 1}`;
-                        let values = [["1"]];
+                        const range = `I${i + 1}`;
+                        const values = [["1"]];
 
                         try {
                             const auth = await getAuthToken();
@@ -117,8 +118,8 @@ app.post("/scan", async (req, res) => {
                         return;
                     }
                     else {
-                        let range = `J${i + 1}`;
-                        let values = [["1"]];
+                        const range = `J${i + 1}`;
+                        const values = [["1"]];
 
                         try {
                             const auth = await getAuthToken();
@@ -172,7 +173,7 @@ app.get("/generate", async (req, res) => {
                     console.error(err)
                 }
             }
-            console.log(encrypted);
+            // console.log(encrypted);
             const qrd = await generateQR(encrypted);
             qrs.push(qrd);
         }
@@ -192,16 +193,6 @@ app.get("/generate", async (req, res) => {
     }
 
 });
-
-// function createQR(text) {
-// //     qr.toDataURL(text)
-// //     .then(url=>{
-// //         console.log(url);
-// //     })
-// //     .catch(err=>{
-// //         console.error(err);
-// //     })
-// // }
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
