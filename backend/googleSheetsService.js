@@ -50,20 +50,23 @@ async function updateValues({ spreadsheetId, auth, sheetName, range, values }) {
 }
 
 async function updateHashes({ spreadsheetId, auth, range, values }) {
-    const resource = { values };
+    const resource = {
+        majorDimension: 'COLUMNS',
+        values: values,
+        
+    };
     try {
         const res = await sheets.spreadsheets.values.update({
+            resource,
             spreadsheetId,
             auth,
             range,
-            valueInputOption: 'USER_ENTERED',
-            majorDimension: "COLUMNS",
-            resource,
+            valueInputOption: "USER_ENTERED"
         });
         console.log(`Updated ${res.data.updatedCells} cells`);
         return res;
     }
-    catch (error) {
+    catch (err) {
         throw err;
     }
 }
